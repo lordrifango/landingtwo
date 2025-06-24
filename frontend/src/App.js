@@ -209,9 +209,6 @@ function App() {
     setUserPosition(position);
     setReferralCode(code);
     
-    // Increment total users
-    setTotalUsers(prev => prev + 1);
-    
     // Simulate form submission
     setIsSubmitted(true);
   };
