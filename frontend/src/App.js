@@ -12,7 +12,6 @@ function App() {
   const [showMissionModal, setShowMissionModal] = useState(false);
   const [language, setLanguage] = useState('fr');
   const [userPosition, setUserPosition] = useState(null);
-  const [totalUsers, setTotalUsers] = useState(2847); // Starting number for credibility
   const [referralCode, setReferralCode] = useState('');
   const phoneInputRef = useRef(null);
   const itiRef = useRef(null);
