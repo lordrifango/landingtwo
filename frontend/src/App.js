@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
@@ -8,6 +8,7 @@ function App() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [copySuccess, setCopySuccess] = useState(false);
+  const [showMissionModal, setShowMissionModal] = useState(false);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -64,6 +65,35 @@ function App() {
     }
   };
 
+  const openMissionModal = () => {
+    setShowMissionModal(true);
+  };
+
+  const closeMissionModal = () => {
+    setShowMissionModal(false);
+  };
+
+  // Close modal when clicking outside
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        closeMissionModal();
+      }
+    };
+
+    if (showMissionModal) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [showMissionModal]);
+
   const LockIcon = () => (
     <svg className="w-12 h-12 text-indigo-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
       <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -79,6 +109,12 @@ function App() {
   const GiftIcon = () => (
     <svg className="w-12 h-12 text-indigo-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
       <path strokeLinecap="round" strokeLinejoin="round" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H4.5a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+    </svg>
+  );
+
+  const LinkedInIcon = () => (
+    <svg className="w-4 h-4 inline ml-1" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
     </svg>
   );
 
@@ -173,6 +209,11 @@ function App() {
                     </svg>
                     {copySuccess ? 'Lien copié !' : 'Copier le lien'}
                   </button>
+                  
+                  {/* Micro-texte de suggestion */}
+                  <p className="text-xs text-gray-400 text-center mt-3">
+                    <em>Idéal pour partager sur Instagram, TikTok ou par SMS !</em>
+                  </p>
                 </div>
               </div>
             </div>
@@ -275,14 +316,88 @@ function App() {
           <p className="text-sm text-gray-400">
             Construit avec ❤️ pour nos communautés. Découvrez notre{' '}
             <a 
-              href="#" 
-              className="text-violet-primary hover:text-violet-700 transition-colors duration-200 underline"
+              href="javascript:void(0);" 
+              id="missionLink"
+              onClick={openMissionModal}
+              className="text-violet-primary hover:text-violet-700 transition-colors duration-200 underline cursor-pointer"
             >
               mission
             </a>.
           </p>
         </div>
       </footer>
+
+      {/* Modale Notre Mission */}
+      {showMissionModal && (
+        <div 
+          className="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          onClick={closeMissionModal}
+        >
+          <div 
+            className="modal-content bg-white rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative animate-fade-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Bouton de fermeture */}
+            <button
+              onClick={closeMissionModal}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Photo des fondateurs */}
+            <div className="text-center mb-6">
+              <div className="bg-gradient-to-br from-violet-100 to-violet-200 rounded-2xl w-32 h-32 mx-auto flex items-center justify-center mb-4">
+                <svg className="w-16 h-16 text-violet-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-violet-primary mb-6 font-poppins">
+                Notre Mission
+              </h3>
+            </div>
+
+            {/* Contenu de la mission */}
+            <div className="text-gray-slate leading-relaxed mb-6">
+              <p className="mb-4">
+                Nous sommes <strong>Chérif Coulibaly</strong> et <strong>Yann-habib Koné</strong>. En grandissant au sein de nos communautés, nous avons vu la puissance de l'entraide et de la confiance pour réaliser de grandes choses. Mais nous avons aussi vu la charge mentale et les risques qui pèsent sur ceux qui organisent cette solidarité.
+              </p>
+              <p>
+                Nous avons créé Tonty pour une raison simple : donner à nos communautés l'outil moderne et sécurisé qu'elles méritent. Notre mission est de transformer chaque tontine et chaque projet de groupe en une preuve de confiance, pour débloquer le potentiel économique et social de tout un continent.
+              </p>
+            </div>
+
+            {/* Signature et liens */}
+            <div className="text-center">
+              <p className="text-gray-slate italic mb-4">
+                — Chérif Coulibaly & Yann-habib Koné, Fondateurs de Tonty
+              </p>
+              <div className="founder-links space-x-6">
+                <a 
+                  href="https://linkedin.com/in/cherif-coulibaly" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-violet-primary hover:text-violet-700 transition-colors duration-200 text-sm inline-flex items-center"
+                >
+                  Profil LinkedIn de Chérif
+                  <LinkedInIcon />
+                </a>
+                <a 
+                  href="https://linkedin.com/in/yann-habib-kone" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-violet-primary hover:text-violet-700 transition-colors duration-200 text-sm inline-flex items-center"
+                >
+                  Profil LinkedIn de Yann-habib
+                  <LinkedInIcon />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
