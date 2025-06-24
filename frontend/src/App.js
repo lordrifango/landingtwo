@@ -214,7 +214,7 @@ function App() {
   };
 
   const getReferralUrl = () => {
-    return `${window.location.origin}?ref=${referralCode}`;
+    return `https://tonty.app/?ref=${referralCode}`;
   };
 
   const handleWhatsAppShare = () => {
