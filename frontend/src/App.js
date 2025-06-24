@@ -178,7 +178,14 @@ function App() {
   };
 
   const generateUserPosition = () => {
-    return Math.floor(Math.random() * 500) + 50; // Random position between 50-549
+    const baseNumber = 2518;
+    const now = new Date();
+    // Calcule les secondes depuis minuit
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const secondsSinceMidnight = Math.floor((now - startOfDay) / 1000);
+    // Divise par un facteur pour ne pas augmenter trop vite (ex: 10)
+    const position = baseNumber + Math.floor(secondsSinceMidnight / 10);
+    return position;
   };
 
   const handleSubmit = (e) => {
