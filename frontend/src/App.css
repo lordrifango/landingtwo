@@ -194,6 +194,62 @@ img {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
+/* International Telephone Input Styling */
+.iti {
+  width: 100% !important;
+}
+
+.iti__input {
+  width: 100% !important;
+  padding: 1rem 1.5rem !important;
+  font-size: 1.125rem !important;
+  border: 2px solid #d1d5db !important;
+  border-radius: 0.75rem !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.iti__input:focus {
+  outline: none !important;
+  border-color: var(--violet-primary) !important;
+  box-shadow: 0 0 0 2px rgba(92, 107, 192, 0.2) !important;
+}
+
+.iti__input.error {
+  border-color: #ef4444 !important;
+}
+
+.iti__dropdown {
+  border: 1px solid #d1d5db !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+.iti__country:hover {
+  background-color: #f3f4f6 !important;
+}
+
+.iti__country.iti__highlight {
+  background-color: var(--violet-primary) !important;
+  color: white !important;
+}
+
+.iti__flag-container {
+  padding: 1rem 0.75rem !important;
+}
+
+/* Waitlist styling */
+.bg-violet-50 {
+  background-color: rgba(92, 107, 192, 0.05);
+}
+
+.from-violet-50 {
+  --tw-gradient-from: rgba(92, 107, 192, 0.05);
+}
+
+.to-blue-50 {
+  --tw-gradient-to: rgba(59, 130, 246, 0.05);
+}
+
 /* Enhanced button interactions */
 button {
   position: relative;
@@ -313,6 +369,16 @@ img[loading="lazy"] {
     gap: 0.5rem;
     align-items: center;
   }
+
+  /* Mobile phone input adjustments */
+  .iti__input {
+    padding: 0.875rem 1rem !important;
+    font-size: 1rem !important;
+  }
+  
+  .iti__flag-container {
+    padding: 0.875rem 0.5rem !important;
+  }
 }
 
 /* Cursor pointer for clickable elements */
@@ -323,4 +389,17 @@ img[loading="lazy"] {
 /* Utility classes for z-index */
 .z-50 {
   z-index: 50;
+}
+
+.z-40 {
+  z-index: 40;
+}
+
+/* Responsive grid adjustments */
+.grid {
+  display: grid;
+}
+
+.gap-6 {
+  gap: 1.5rem;
 }

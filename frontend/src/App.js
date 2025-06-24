@@ -1,29 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 function App() {
   const [formData, setFormData] = useState({
-    contact: ''
+    phone: '',
+    email: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [copySuccess, setCopySuccess] = useState(false);
   const [showMissionModal, setShowMissionModal] = useState(false);
-  const [language, setLanguage] = useState('fr'); // 'fr' or 'en'
+  const [language, setLanguage] = useState('fr');
+  const [userPosition, setUserPosition] = useState(null);
+  const [totalUsers, setTotalUsers] = useState(2847); // Starting number for credibility
+  const [referralCode, setReferralCode] = useState('');
+  const phoneInputRef = useRef(null);
+  const itiRef = useRef(null);
 
   // Translation object
   const translations = {
     fr: {
       mainTitle: "Atteignez vos objectifs ensemble, en toute confiance.",
       subtitle: "Tonty est la nouvelle application gratuite pour gérer vos cotisations et projets de groupe de manière simple et sécurisée. Dites adieu aux carnets, aux oublis et aux discussions sans fin pour savoir qui a payé.",
-      placeholder: "Votre numéro ou e-mail",
+      phonePlaceholder: "Numéro de téléphone",
+      emailPlaceholder: "E-mail (optionnel)",
       ctaButton: "Je veux un accès prioritaire !",
       noSpam: "Sans spam, promis. Nous vous contacterons uniquement pour le lancement.",
-      thankYou: "Merci ! Votre place est réservée.",
-      shareMessage: "Une communauté est plus forte ensemble. Faites connaître Tonty aux membres de votre groupe pour qu'ils soient prêts dès le lancement !",
+      onWaitlistTitle: "Vous êtes sur la liste ! Votre position :",
+      totalUsersText: "Sur",
+      totalUsersText2: "personnes déjà inscrites.",
+      moveUpTitle: "Accédez à Tonty parmi les premiers ! 🚀",
+      moveUpText: "Pour remonter dans la file, partagez votre lien unique. Chaque ami qui s'inscrit vous fait gagner des places !",
+      yourReferralLink: "Votre lien de parrainage :",
+      copyReferralLink: "Copier mon lien",
       shareWhatsApp: "Partager sur WhatsApp",
       shareFacebook: "Partager sur Facebook",
-      copyLink: "Copier le lien",
       linkCopied: "Lien copié !",
       shareOtherPlatforms: "Idéal pour partager sur Instagram, TikTok ou par SMS !",
       benefit1Title: "Participez en toute sécurité",
@@ -42,24 +53,29 @@ function App() {
       mission: "mission",
       missionTitle: "Notre Mission",
       missionText1: "Nous sommes Chérif Coulibaly et Yann-habib Koné. En grandissant au sein de nos communautés, nous avons vu la puissance de l'entraide et de la confiance pour réaliser de grandes choses. Mais nous avons aussi vu la charge mentale et les risques qui pèsent sur ceux qui organisent cette solidarité.",
-      missionText2: "Nous avons créé Tonty pour une raison simple : donner à nos communautés l'outil moderne et sécurisé qu'elles méritent. Notre mission est de transformer chaque tontine et chaque projet de groupe en une preuve de confiance, pour débloquer le potentiel économique et social de tout un continent.",
+      missionText2: "Nous avons créé Tonty pour une raison simple : donner à nos communautés l'outil moderne et sécurisé qu'elles méritent. Notre mission est de transformer chaque cercle d'épargne et chaque projet de groupe en une preuve de confiance, pour débloquer le potentiel économique et social de tout un continent.",
       foundersSignature: "— Chérif Coulibaly & Yann-habib Koné, Fondateurs de Tonty",
       linkedinCherif: "Profil LinkedIn de Chérif",
       linkedinYann: "Profil LinkedIn de Yann-habib",
-      errorMessage: "Veuillez saisir votre numéro ou e-mail",
+      errorMessage: "Veuillez saisir un numéro de téléphone valide",
       whatsappShareText: "🚀 Découvrez Tonty, la nouvelle app pour gérer vos cotisations de groupe en toute sécurité ! Rejoignez-moi pour un accès prioritaire : "
     },
     en: {
       mainTitle: "Achieve your goals together, with confidence.",
       subtitle: "Tonty is the new free application to manage your group contributions and projects in a simple and secure way. Say goodbye to notebooks, forgotten payments, and endless discussions about who has paid.",
-      placeholder: "Your phone number or email",
+      phonePlaceholder: "Phone number",
+      emailPlaceholder: "Email (optional)",
       ctaButton: "I want priority access!",
       noSpam: "No spam, we promise. We'll only contact you for the launch.",
-      thankYou: "Thank you! Your spot is reserved.",
-      shareMessage: "A community is stronger together. Let your group members know about Tonty so they're ready for the launch!",
+      onWaitlistTitle: "You're on the list! Your position:",
+      totalUsersText: "Out of",
+      totalUsersText2: "people already registered.",
+      moveUpTitle: "Get early access to Tonty! 🚀",
+      moveUpText: "To move up in the queue, share your unique link. Each friend who signs up helps you gain positions!",
+      yourReferralLink: "Your referral link:",
+      copyReferralLink: "Copy my link",
       shareWhatsApp: "Share on WhatsApp",
       shareFacebook: "Share on Facebook",
-      copyLink: "Copy link",
       linkCopied: "Link copied!",
       shareOtherPlatforms: "Perfect for sharing on Instagram, TikTok or via SMS!",
       benefit1Title: "Participate with complete security",
@@ -78,11 +94,11 @@ function App() {
       mission: "mission",
       missionTitle: "Our Mission",
       missionText1: "We are Chérif Coulibaly and Yann-habib Koné. Growing up within our communities, we have seen the power of mutual aid and trust to achieve great things. But we have also seen the mental burden and risks that weigh on those who organize this solidarity.",
-      missionText2: "We created Tonty for a simple reason: to give our communities the modern and secure tool they deserve. Our mission is to transform every tontine and every group project into proof of trust, to unlock the economic and social potential of an entire continent.",
+      missionText2: "We created Tonty for a simple reason: to give our communities the modern and secure tool they deserve. Our mission is to transform every savings circle and every group project into proof of trust, to unlock the economic and social potential of an entire continent.",
       foundersSignature: "— Chérif Coulibaly & Yann-habib Koné, Founders of Tonty",
       linkedinCherif: "Chérif's LinkedIn Profile",
       linkedinYann: "Yann-habib's LinkedIn Profile",
-      errorMessage: "Please enter your phone number or email",
+      errorMessage: "Please enter a valid phone number",
       whatsappShareText: "🚀 Discover Tonty, the new app to securely manage your group contributions! Join me for priority access: "
     }
   };
@@ -122,37 +138,91 @@ function App() {
     detectLanguage();
   }, []);
 
+  // Initialize phone input
+  useEffect(() => {
+    if (phoneInputRef.current && window.intlTelInput && !itiRef.current) {
+      itiRef.current = window.intlTelInput(phoneInputRef.current, {
+        initialCountry: 'ci', // Default to Côte d'Ivoire
+        preferredCountries: ['ci', 'sn', 'bf', 'fr', 'us', 'ca', 'gb'],
+        separateDialCode: true,
+        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.19/build/js/utils.js"
+      });
+
+      // Handle country change
+      phoneInputRef.current.addEventListener("countrychange", function() {
+        setError(''); // Clear any existing errors when country changes
+      });
+    }
+
+    return () => {
+      if (itiRef.current) {
+        itiRef.current.destroy();
+        itiRef.current = null;
+      }
+    };
+  }, []);
+
   const t = translations[language];
 
   const handleInputChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      contact: e.target.value
+      [name]: value
     });
     if (error) setError('');
+  };
+
+  const generateReferralCode = () => {
+    return Math.random().toString(36).substring(2, 8).toUpperCase();
+  };
+
+  const generateUserPosition = () => {
+    return Math.floor(Math.random() * 500) + 50; // Random position between 50-549
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    if (!formData.contact.trim()) {
+    // Validate phone number using intl-tel-input
+    if (itiRef.current && !itiRef.current.isValidNumber()) {
       setError(t.errorMessage);
       return;
     }
 
+    // Get the full international number
+    const fullPhoneNumber = itiRef.current ? itiRef.current.getNumber() : formData.phone;
+    
+    console.log('Phone:', fullPhoneNumber);
+    console.log('Email:', formData.email);
+
+    // Generate user data
+    const position = generateUserPosition();
+    const code = generateReferralCode();
+    
+    setUserPosition(position);
+    setReferralCode(code);
+    
+    // Increment total users
+    setTotalUsers(prev => prev + 1);
+    
     // Simulate form submission
     setIsSubmitted(true);
   };
 
+  const getReferralUrl = () => {
+    return `${window.location.origin}?ref=${referralCode}`;
+  };
+
   const handleWhatsAppShare = () => {
     const message = encodeURIComponent(
-      t.whatsappShareText + window.location.href
+      t.whatsappShareText + getReferralUrl()
     );
     window.open(`https://wa.me/?text=${message}`, '_blank');
   };
 
   const handleFacebookShare = () => {
-    const url = encodeURIComponent(window.location.href);
+    const url = encodeURIComponent(getReferralUrl());
     window.open(
       `https://www.facebook.com/sharer/sharer.php?u=${url}`,
       'facebook-share-dialog',
@@ -160,15 +230,15 @@ function App() {
     );
   };
 
-  const handleCopyLink = async () => {
+  const handleCopyReferralLink = async () => {
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(getReferralUrl());
       setCopySuccess(true);
       setTimeout(() => setCopySuccess(false), 2000);
     } catch (err) {
       // Fallback for older browsers
       const textArea = document.createElement('textarea');
-      textArea.value = window.location.href;
+      textArea.value = getReferralUrl();
       document.body.appendChild(textArea);
       textArea.focus();
       textArea.select();
@@ -266,9 +336,11 @@ function App() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <input
-                    type="text"
-                    placeholder={t.placeholder}
-                    value={formData.contact}
+                    ref={phoneInputRef}
+                    type="tel"
+                    name="phone"
+                    placeholder={t.phonePlaceholder}
+                    value={formData.phone}
                     onChange={handleInputChange}
                     className={`w-full px-6 py-4 text-lg border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-primary transition-all duration-200 ${
                       error ? 'border-red-500' : 'border-gray-300 focus:border-violet-primary'
@@ -277,6 +349,17 @@ function App() {
                   {error && (
                     <p className="text-red-500 text-sm mt-2 text-left">{error}</p>
                   )}
+                </div>
+
+                <div>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder={t.emailPlaceholder}
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="w-full px-6 py-4 text-lg border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-primary focus:border-violet-primary transition-all duration-200"
+                  />
                 </div>
                 
                 <button
@@ -299,12 +382,48 @@ function App() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold text-green-success mb-4">
-                  {t.thankYou}
+                
+                {/* Waitlist Position */}
+                <h3 className="text-2xl font-bold text-green-success mb-2">
+                  {t.onWaitlistTitle}
                 </h3>
+                <div className="text-4xl font-bold text-violet-primary mb-2">
+                  #{userPosition}
+                </div>
                 <p className="text-gray-slate mb-6">
-                  {t.shareMessage}
+                  {t.totalUsersText} <span className="font-semibold">{totalUsers.toLocaleString()}</span> {t.totalUsersText2}
                 </p>
+
+                {/* Viral Sharing Section */}
+                <div className="bg-gradient-to-r from-violet-50 to-blue-50 p-6 rounded-xl mb-6">
+                  <h4 className="text-lg font-bold text-violet-primary mb-3">
+                    {t.moveUpTitle}
+                  </h4>
+                  <p className="text-gray-slate text-sm mb-4">
+                    {t.moveUpText}
+                  </p>
+                  
+                  {/* Referral Link */}
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      {t.yourReferralLink}
+                    </label>
+                    <div className="flex">
+                      <input
+                        type="text"
+                        value={getReferralUrl()}
+                        readOnly
+                        className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-l-lg bg-gray-50"
+                      />
+                      <button
+                        onClick={handleCopyReferralLink}
+                        className="px-4 py-2 bg-violet-primary text-white text-sm font-medium rounded-r-lg hover:bg-violet-700 transition-colors duration-200"
+                      >
+                        {copySuccess ? t.linkCopied : t.copyReferralLink}
+                      </button>
+                    </div>
+                  </div>
+                </div>
                 
                 {/* Boutons de partage */}
                 <div className="space-y-3">
@@ -326,16 +445,6 @@ function App() {
                       <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                     </svg>
                     {t.shareFacebook}
-                  </button>
-                  
-                  <button
-                    onClick={handleCopyLink}
-                    className="w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 relative"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                    </svg>
-                    {copySuccess ? t.linkCopied : t.copyLink}
                   </button>
                   
                   {/* Micro-texte de suggestion */}
