@@ -88,7 +88,7 @@ function App() {
       testimonial1Author: "— Aïssatou, community organizer in Dakar.",
       testimonial2: "« Being able to contribute to family projects from Paris with clear proof, that's going to change everything for me. »",
       testimonial2Author: "— Fatou, diaspora member in Paris.",
-      copyright: "© 2024 Tonty.",
+      copyright: "© 2025 Tonty.",
       footerText: "Built with ❤️ for our communities. Discover our",
       mission: "mission",
       missionTitle: "Our Mission",
