@@ -47,7 +47,7 @@ function App() {
       testimonial1Author: "— Aïssatou, organisatrice de communauté à Dakar.",
       testimonial2: "« Pouvoir contribuer aux projets de la famille depuis Paris avec une preuve claire, ça va tout changer pour moi. »",
       testimonial2Author: "— Fatou, membre de la diaspora à Paris.",
-      copyright: "© 2024 Tonty.",
+      copyright: "© 2025 Tonty.",
       footerText: "Construit avec ❤️ pour nos communautés. Découvrez notre",
       mission: "mission",
       missionTitle: "Notre Mission",
