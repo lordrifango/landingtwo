@@ -9,6 +9,120 @@ function App() {
   const [error, setError] = useState('');
   const [copySuccess, setCopySuccess] = useState(false);
   const [showMissionModal, setShowMissionModal] = useState(false);
+  const [language, setLanguage] = useState('fr'); // 'fr' or 'en'
+
+  // Translation object
+  const translations = {
+    fr: {
+      mainTitle: "Atteignez vos objectifs ensemble, en toute confiance.",
+      subtitle: "Tonty est la nouvelle application gratuite pour gérer vos cotisations et projets de groupe de manière simple et sécurisée. Dites adieu aux carnets, aux oublis et aux discussions sans fin pour savoir qui a payé.",
+      placeholder: "Votre numéro ou e-mail",
+      ctaButton: "Je veux un accès prioritaire !",
+      noSpam: "Sans spam, promis. Nous vous contacterons uniquement pour le lancement.",
+      thankYou: "Merci ! Votre place est réservée.",
+      shareMessage: "Une communauté est plus forte ensemble. Faites connaître Tonty aux membres de votre groupe pour qu'ils soient prêts dès le lancement !",
+      shareWhatsApp: "Partager sur WhatsApp",
+      shareFacebook: "Partager sur Facebook",
+      copyLink: "Copier le lien",
+      linkCopied: "Lien copié !",
+      shareOtherPlatforms: "Idéal pour partager sur Instagram, TikTok ou par SMS !",
+      benefit1Title: "Participez en toute sécurité",
+      benefit1Text: "Chaque contribution est enregistrée et visible de tous. Concentrez-vous sur vos projets en protégeant votre argent et votre réputation.",
+      benefit2Title: "Organisez sans effort",
+      benefit2Text: "Fini la charge mentale. Les rappels sont automatiques et le suivi des paiements est centralisé. Vous gagnez du temps pour ce qui compte vraiment.",
+      benefit3Title: "Réalisez tous vos projets",
+      benefit3Text: "Mariage, études, business... Donnez vie à vos projets, qu'ils soient petits ou grands, grâce à la force de votre communauté.",
+      testimonialsTitle: "Ce qu'elles attendent de Tonty...",
+      testimonial1: "« Enfin une solution moderne pour gérer notre groupe sans stress. J'attends ça depuis des années ! »",
+      testimonial1Author: "— Aïssatou, organisatrice de communauté à Dakar.",
+      testimonial2: "« Pouvoir contribuer aux projets de la famille depuis Paris avec une preuve claire, ça va tout changer pour moi. »",
+      testimonial2Author: "— Fatou, membre de la diaspora à Paris.",
+      copyright: "© 2024 Tonty.",
+      footerText: "Construit avec ❤️ pour nos communautés. Découvrez notre",
+      mission: "mission",
+      missionTitle: "Notre Mission",
+      missionText1: "Nous sommes Chérif Coulibaly et Yann-habib Koné. En grandissant au sein de nos communautés, nous avons vu la puissance de l'entraide et de la confiance pour réaliser de grandes choses. Mais nous avons aussi vu la charge mentale et les risques qui pèsent sur ceux qui organisent cette solidarité.",
+      missionText2: "Nous avons créé Tonty pour une raison simple : donner à nos communautés l'outil moderne et sécurisé qu'elles méritent. Notre mission est de transformer chaque tontine et chaque projet de groupe en une preuve de confiance, pour débloquer le potentiel économique et social de tout un continent.",
+      foundersSignature: "— Chérif Coulibaly & Yann-habib Koné, Fondateurs de Tonty",
+      linkedinCherif: "Profil LinkedIn de Chérif",
+      linkedinYann: "Profil LinkedIn de Yann-habib",
+      errorMessage: "Veuillez saisir votre numéro ou e-mail",
+      whatsappShareText: "🚀 Découvrez Tonty, la nouvelle app pour gérer vos cotisations de groupe en toute sécurité ! Rejoignez-moi pour un accès prioritaire : "
+    },
+    en: {
+      mainTitle: "Achieve your goals together, with confidence.",
+      subtitle: "Tonty is the new free application to manage your group contributions and projects in a simple and secure way. Say goodbye to notebooks, forgotten payments, and endless discussions about who has paid.",
+      placeholder: "Your phone number or email",
+      ctaButton: "I want priority access!",
+      noSpam: "No spam, we promise. We'll only contact you for the launch.",
+      thankYou: "Thank you! Your spot is reserved.",
+      shareMessage: "A community is stronger together. Let your group members know about Tonty so they're ready for the launch!",
+      shareWhatsApp: "Share on WhatsApp",
+      shareFacebook: "Share on Facebook",
+      copyLink: "Copy link",
+      linkCopied: "Link copied!",
+      shareOtherPlatforms: "Perfect for sharing on Instagram, TikTok or via SMS!",
+      benefit1Title: "Participate with complete security",
+      benefit1Text: "Every contribution is recorded and visible to all. Focus on your projects while protecting your money and reputation.",
+      benefit2Title: "Organize effortlessly",
+      benefit2Text: "No more mental burden. Reminders are automatic and payment tracking is centralized. You save time for what really matters.",
+      benefit3Title: "Achieve all your projects",
+      benefit3Text: "Wedding, studies, business... Bring your projects to life, whether small or large, thanks to the strength of your community.",
+      testimonialsTitle: "What they expect from Tonty...",
+      testimonial1: "« Finally a modern solution to manage our group without stress. I've been waiting for this for years! »",
+      testimonial1Author: "— Aïssatou, community organizer in Dakar.",
+      testimonial2: "« Being able to contribute to family projects from Paris with clear proof, that's going to change everything for me. »",
+      testimonial2Author: "— Fatou, diaspora member in Paris.",
+      copyright: "© 2024 Tonty.",
+      footerText: "Built with ❤️ for our communities. Discover our",
+      mission: "mission",
+      missionTitle: "Our Mission",
+      missionText1: "We are Chérif Coulibaly and Yann-habib Koné. Growing up within our communities, we have seen the power of mutual aid and trust to achieve great things. But we have also seen the mental burden and risks that weigh on those who organize this solidarity.",
+      missionText2: "We created Tonty for a simple reason: to give our communities the modern and secure tool they deserve. Our mission is to transform every tontine and every group project into proof of trust, to unlock the economic and social potential of an entire continent.",
+      foundersSignature: "— Chérif Coulibaly & Yann-habib Koné, Founders of Tonty",
+      linkedinCherif: "Chérif's LinkedIn Profile",
+      linkedinYann: "Yann-habib's LinkedIn Profile",
+      errorMessage: "Please enter your phone number or email",
+      whatsappShareText: "🚀 Discover Tonty, the new app to securely manage your group contributions! Join me for priority access: "
+    }
+  };
+
+  // Auto-detect language based on browser settings and geolocation
+  useEffect(() => {
+    const detectLanguage = async () => {
+      try {
+        // Check browser language first
+        const browserLang = navigator.language || navigator.languages[0];
+        const isEnglish = browserLang.startsWith('en');
+        
+        // Try to get country info from IP (using a free service)
+        try {
+          const response = await fetch('https://ipapi.co/json/');
+          const data = await response.json();
+          
+          // English-speaking countries
+          const englishCountries = ['US', 'CA', 'GB', 'AU', 'NZ', 'IE', 'ZA'];
+          const isEnglishCountry = englishCountries.includes(data.country_code);
+          
+          // Set language based on country or browser language
+          if (isEnglish || isEnglishCountry) {
+            setLanguage('en');
+          }
+        } catch (error) {
+          // If IP detection fails, fallback to browser language only
+          if (isEnglish) {
+            setLanguage('en');
+          }
+        }
+      } catch (error) {
+        console.log('Language detection failed, using default French');
+      }
+    };
+
+    detectLanguage();
+  }, []);
+
+  const t = translations[language];
 
   const handleInputChange = (e) => {
     setFormData({
@@ -22,7 +136,7 @@ function App() {
     e.preventDefault();
     
     if (!formData.contact.trim()) {
-      setError('Veuillez saisir votre numéro ou e-mail');
+      setError(t.errorMessage);
       return;
     }
 
@@ -32,7 +146,7 @@ function App() {
 
   const handleWhatsAppShare = () => {
     const message = encodeURIComponent(
-      "🚀 Découvrez Tonty, la nouvelle app pour gérer vos cotisations de groupe en toute sécurité ! Rejoignez-moi pour un accès prioritaire : " + window.location.href
+      t.whatsappShareText + window.location.href
     );
     window.open(`https://wa.me/?text=${message}`, '_blank');
   };
@@ -71,6 +185,11 @@ function App() {
 
   const closeMissionModal = () => {
     setShowMissionModal(false);
+  };
+
+  // Toggle language manually
+  const toggleLanguage = () => {
+    setLanguage(language === 'fr' ? 'en' : 'fr');
   };
 
   // Close modal when clicking outside
@@ -120,16 +239,25 @@ function App() {
 
   return (
     <div className="min-h-screen bg-off-white">
+      {/* Language Toggle Button */}
+      <div className="fixed top-4 right-4 z-40">
+        <button
+          onClick={toggleLanguage}
+          className="bg-white shadow-lg rounded-full px-3 py-2 text-sm font-medium text-violet-primary hover:bg-violet-50 transition-all duration-200"
+        >
+          {language === 'fr' ? '🇺🇸 EN' : '🇫🇷 FR'}
+        </button>
+      </div>
+
       {/* Section 1: L'Accroche Principale */}
       <section className="pt-12 pb-8 px-4 text-center">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold text-violet-primary mb-6 font-poppins">
-            Atteignez vos objectifs ensemble, en toute confiance.
+            {t.mainTitle}
           </h1>
           
           <p className="text-lg md:text-xl text-gray-slate max-w-2xl mx-auto mb-8 font-poppins leading-relaxed">
-            Tonty est la nouvelle application gratuite pour gérer vos cotisations et projets de groupe de manière simple et sécurisée. 
-            Dites adieu aux carnets, aux oublis et aux discussions sans fin pour savoir qui a payé.
+            {t.subtitle}
           </p>
 
           {/* CTA Principal */}
@@ -139,7 +267,7 @@ function App() {
                 <div>
                   <input
                     type="text"
-                    placeholder="Votre numéro ou e-mail"
+                    placeholder={t.placeholder}
                     value={formData.contact}
                     onChange={handleInputChange}
                     className={`w-full px-6 py-4 text-lg border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-primary transition-all duration-200 ${
@@ -155,12 +283,12 @@ function App() {
                   type="submit"
                   className="w-full bg-violet-primary hover:bg-violet-700 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg"
                 >
-                  Je veux un accès prioritaire !
+                  {t.ctaButton}
                 </button>
               </form>
               
               <p className="text-sm text-gray-400 mt-3">
-                Sans spam, promis. Nous vous contacterons uniquement pour le lancement.
+                {t.noSpam}
               </p>
             </div>
           ) : (
@@ -172,10 +300,10 @@ function App() {
                   </svg>
                 </div>
                 <h3 className="text-2xl font-bold text-green-success mb-4">
-                  Merci ! Votre place est réservée.
+                  {t.thankYou}
                 </h3>
                 <p className="text-gray-slate mb-6">
-                  Une communauté est plus forte ensemble. Faites connaître Tonty aux membres de votre groupe pour qu'ils soient prêts dès le lancement !
+                  {t.shareMessage}
                 </p>
                 
                 {/* Boutons de partage */}
@@ -187,7 +315,7 @@ function App() {
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
                     </svg>
-                    Partager sur WhatsApp
+                    {t.shareWhatsApp}
                   </button>
                   
                   <button
@@ -197,7 +325,7 @@ function App() {
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                     </svg>
-                    Partager sur Facebook
+                    {t.shareFacebook}
                   </button>
                   
                   <button
@@ -207,12 +335,12 @@ function App() {
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                     </svg>
-                    {copySuccess ? 'Lien copié !' : 'Copier le lien'}
+                    {copySuccess ? t.linkCopied : t.copyLink}
                   </button>
                   
                   {/* Micro-texte de suggestion */}
                   <p className="text-xs text-gray-400 text-center mt-3">
-                    <em>Idéal pour partager sur Instagram, TikTok ou par SMS !</em>
+                    <em>{t.shareOtherPlatforms}</em>
                   </p>
                 </div>
               </div>
@@ -227,7 +355,7 @@ function App() {
           <div className="relative">
             <img
               src="https://images.unsplash.com/photo-1747330666333-f9e2d1f8e6c6"
-              alt="Femmes africaines célébrant leur réussite"
+              alt={language === 'fr' ? "Femmes africaines célébrant leur réussite" : "African women celebrating their success"}
               className="w-full h-64 md:h-96 object-cover rounded-2xl shadow-xl"
               loading="lazy"
             />
@@ -244,10 +372,10 @@ function App() {
             <div className="text-center">
               <LockIcon />
               <h3 className="text-xl font-bold text-gray-slate mb-4 font-poppins">
-                Participez en toute sécurité
+                {t.benefit1Title}
               </h3>
               <p className="text-gray-slate leading-relaxed">
-                Chaque contribution est enregistrée et visible de tous. Concentrez-vous sur vos projets en protégeant votre argent et votre réputation.
+                {t.benefit1Text}
               </p>
             </div>
 
@@ -255,10 +383,10 @@ function App() {
             <div className="text-center">
               <ListIcon />
               <h3 className="text-xl font-bold text-gray-slate mb-4 font-poppins">
-                Organisez sans effort
+                {t.benefit2Title}
               </h3>
               <p className="text-gray-slate leading-relaxed">
-                Fini la charge mentale. Les rappels sont automatiques et le suivi des paiements est centralisé. Vous gagnez du temps pour ce qui compte vraiment.
+                {t.benefit2Text}
               </p>
             </div>
 
@@ -266,10 +394,10 @@ function App() {
             <div className="text-center">
               <GiftIcon />
               <h3 className="text-xl font-bold text-gray-slate mb-4 font-poppins">
-                Réalisez tous vos projets
+                {t.benefit3Title}
               </h3>
               <p className="text-gray-slate leading-relaxed">
-                Mariage, études, business... Donnez vie à vos projets, qu'ils soient petits ou grands, grâce à la force de votre communauté.
+                {t.benefit3Text}
               </p>
             </div>
           </div>
@@ -280,27 +408,27 @@ function App() {
       <section className="py-12 px-4 bg-off-white">
         <div className="max-w-4xl mx-auto">
           <h4 className="text-lg text-gray-slate text-center mb-8 font-poppins">
-            Ce qu'elles attendent de Tonty...
+            {t.testimonialsTitle}
           </h4>
           
           <div className="grid md:grid-cols-2 gap-6">
             {/* Témoignage 1 */}
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
               <p className="text-gray-slate italic mb-4 leading-relaxed">
-                « Enfin une solution moderne pour gérer notre groupe sans stress. J'attends ça depuis des années ! »
+                {t.testimonial1}
               </p>
               <p className="text-sm text-gray-400 font-poppins">
-                — Aïssatou, organisatrice de communauté à Dakar.
+                {t.testimonial1Author}
               </p>
             </div>
 
             {/* Témoignage 2 */}
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
               <p className="text-gray-slate italic mb-4 leading-relaxed">
-                « Pouvoir contribuer aux projets de la famille depuis Paris avec une preuve claire, ça va tout changer pour moi. »
+                {t.testimonial2}
               </p>
               <p className="text-sm text-gray-400 font-poppins">
-                — Fatou, membre de la diaspora à Paris.
+                {t.testimonial2Author}
               </p>
             </div>
           </div>
@@ -311,15 +439,15 @@ function App() {
       <footer className="py-8 px-4 bg-off-white border-t border-gray-200">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-sm text-gray-400 mb-2">
-            © 2024 Tonty.
+            {t.copyright}
           </p>
           <p className="text-sm text-gray-400">
-            Construit avec ❤️ pour nos communautés. Découvrez notre{' '}
+            {t.footerText}{' '}
             <button 
               onClick={openMissionModal}
               className="text-violet-primary hover:text-violet-700 transition-colors duration-200 underline cursor-pointer bg-transparent border-none p-0 font-inherit"
             >
-              mission
+              {t.mission}
             </button>.
           </p>
         </div>
@@ -353,24 +481,24 @@ function App() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-violet-primary mb-6 font-poppins">
-                Notre Mission
+                {t.missionTitle}
               </h3>
             </div>
 
             {/* Contenu de la mission */}
             <div className="text-gray-slate leading-relaxed mb-6">
               <p className="mb-4">
-                Nous sommes <strong>Chérif Coulibaly</strong> et <strong>Yann-habib Koné</strong>. En grandissant au sein de nos communautés, nous avons vu la puissance de l'entraide et de la confiance pour réaliser de grandes choses. Mais nous avons aussi vu la charge mentale et les risques qui pèsent sur ceux qui organisent cette solidarité.
+                {t.missionText1}
               </p>
               <p>
-                Nous avons créé Tonty pour une raison simple : donner à nos communautés l'outil moderne et sécurisé qu'elles méritent. Notre mission est de transformer chaque tontine et chaque projet de groupe en une preuve de confiance, pour débloquer le potentiel économique et social de tout un continent.
+                {t.missionText2}
               </p>
             </div>
 
             {/* Signature et liens */}
             <div className="text-center">
               <p className="text-gray-slate italic mb-4">
-                — Chérif Coulibaly & Yann-habib Koné, Fondateurs de Tonty
+                {t.foundersSignature}
               </p>
               <div className="founder-links space-x-6">
                 <a 
@@ -379,7 +507,7 @@ function App() {
                   rel="noopener noreferrer"
                   className="text-violet-primary hover:text-violet-700 transition-colors duration-200 text-sm inline-flex items-center"
                 >
-                  Profil LinkedIn de Chérif
+                  {t.linkedinCherif}
                   <LinkedInIcon />
                 </a>
                 <a 
@@ -388,7 +516,7 @@ function App() {
                   rel="noopener noreferrer"
                   className="text-violet-primary hover:text-violet-700 transition-colors duration-200 text-sm inline-flex items-center"
                 >
-                  Profil LinkedIn de Yann-habib
+                  {t.linkedinYann}
                   <LinkedInIcon />
                 </a>
               </div>
