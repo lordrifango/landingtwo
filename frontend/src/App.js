@@ -315,14 +315,12 @@ function App() {
           </p>
           <p className="text-sm text-gray-400">
             Construit avec ❤️ pour nos communautés. Découvrez notre{' '}
-            <a 
-              href="javascript:void(0);" 
-              id="missionLink"
+            <button 
               onClick={openMissionModal}
-              className="text-violet-primary hover:text-violet-700 transition-colors duration-200 underline cursor-pointer"
+              className="text-violet-primary hover:text-violet-700 transition-colors duration-200 underline cursor-pointer bg-transparent border-none p-0 font-inherit"
             >
               mission
-            </a>.
+            </button>.
           </p>
         </div>
       </footer>
